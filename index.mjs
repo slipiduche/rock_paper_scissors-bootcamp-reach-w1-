@@ -17,9 +17,16 @@ const HAND = ['Rock', 'Paper', 'Scissors']
 const OUTCOME = ['Bob wins', 'Draw', 'Alice wins']
 const Player = (Who) => ({
     ...stdlib.hasRandom,
-    getHand: () => {
+    getHand: async () => {
         const hand = Math.floor(Math.random() * 3)
         console.log(`${Who} played ${HAND[hand]}`)
+        if (Math.random() <= 0.01) {
+            for (let index = 0; index < 10; index++) {
+                console.log(`Bob takes his sweet time...`);
+                await stdlib.wait(1);
+
+            }
+        }
         return hand
     },
     seeOutcome: (outcome) => {
@@ -47,16 +54,7 @@ await Promise.all([
     }),
     ctcBob.p.Bob({
         ...Player('Bob'), acceptWager: async (amt) => {
-            const randomNumber = Math.random()
-            console.log('random:', randomNumber)
-            if (randomNumber <= 0.5) {
-                for (let i = 0; i < 10; i++) {
-                    console.log(`Bob takes his sweet time...`);
-                    await stdlib.wait(1);
-                }
-            } else {
-                console.log(`Bob accepts the wager of ${fmt(amt)}.`);
-            }
+            console.log(`Bob accepts the wager of ${fmt(amt)}.`);
         }
     })
 ])
